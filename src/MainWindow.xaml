@@ -1,0 +1,526 @@
+﻿<Window x:Class="_20120540_week07.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_20120540_week07"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Books Infomation"
+        Height="820"
+        Width="1100"
+        Loaded="Window_Loaded"
+        ResizeMode="CanMinimize"
+        Icon="/images/book.ico">
+    <Grid>
+        <TabControl Name="tabList"
+                    SelectionChanged="tabList_SelectionChanged">
+            <TabItem Header="Library">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="700"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black"
+                            BorderThickness="0.5">
+                    <DockPanel>
+                        <Label DockPanel.Dock="Top"
+                               Name="header"
+                               Content="LIBRARY"
+                               HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center"
+                               Height="50"
+                               FontSize="24"
+                               FontFamily="Cascadia Mono SemiBold"
+                               FontStretch="Medium">
+                        </Label>
+
+                        <Grid DockPanel.Dock="Bottom"
+                              Margin="20,30,20,30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Background="Green"
+                                    Foreground="#183153"
+                                    FontWeight="Medium"
+                                    FontSize="20"
+                                    Grid.Column="0"
+                                    Height="50"
+                                    Click="btn_add">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/images/btn_add.png"
+                                           Height="30"
+                                           RenderOptions.BitmapScalingMode="HighQuality" />
+                                    <TextBlock  Text="Add"
+                                                Margin="10" />
+                                </StackPanel>
+                            </Button>
+                            <Button Background="gray"
+                                    Foreground="#183153"
+                                    FontWeight="Medium"
+                                    FontSize="20"
+                                    Grid.Column="1"
+                                    Height="50"
+                                    Click="btn_edit">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/images/btn_edit.png"
+                                           Height="30"
+                                           RenderOptions.BitmapScalingMode="HighQuality" />
+                                    <TextBlock  Text="Edit"
+                                                Margin="10" />
+                                </StackPanel>
+                            </Button>
+                            <Button Background="Red"
+                                    Foreground="#183153"
+                                    FontWeight="Medium"
+                                    FontSize="20"
+                                    Grid.Column="2"
+                                    Height="50"
+                                    Click="btn_remove">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/images/btn_remove.png"
+                                           Height="30"
+                                           RenderOptions.BitmapScalingMode="HighQuality" />
+                                    <TextBlock  Text="Remove"
+                                                Margin="10" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <Border BorderBrush="Black"
+                                BorderThickness="0,0.5,0,0.5">
+                        <ListView Name="bookList"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                  Background="#fbfbfb"
+                                  BorderBrush="Transparent"
+                                  SelectionChanged="bookList_SelectionChanged">
+                            <ListView.Resources>
+                                <ContextMenu x:Key="bookContextMenu">
+                                    <MenuItem Header="Edit"
+                                              Click="btn_edit" />
+                                    <MenuItem Header="Delete"
+                                              Click="btn_remove" />
+                                </ContextMenu>
+                            </ListView.Resources>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="ContextMenu"
+                                            Value="{StaticResource
+bookContextMenu}" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="10">
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="10"
+                                                              ShadowDepth="1"
+                                                              Direction="270"
+                                                              Color="#bfced6">
+                                            </DropShadowEffect>
+                                        </Border.Effect>
+                                        <StackPanel Height="300"
+                                                    Width="200"
+                                                    Background="white">
+                                            <StackPanel  Margin="0,0,0,10">
+                                                <Image Height="250"
+                                                       Margin="5,5,5,0"
+                                                       Source="{Binding Cover}"
+                                                       Stretch="Uniform"
+                                                       RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                                            </StackPanel>
+                                            <TextBlock Height="50"
+                                                       HorizontalAlignment="Center"
+                                                       TextWrapping="WrapWithOverflow">
+                                  <Run Text="{Binding Title}"
+                                                FontSize="12"
+                                                FontStretch="Medium"
+                                                        FontWeight="Bold"
+                                       FontStyle="Italic"
+                                                        FontFamily="Cascadia Mono" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        </Border>
+                    </DockPanel>
+                    </Border>
+
+                    
+                        <DockPanel Grid.Column="1"
+                                   HorizontalAlignment="Center">
+                        <StackPanel Margin="20,0,20,0"
+                                    Name="detail_panel">
+                            <StackPanel HorizontalAlignment="Center"
+                                        Background="white"
+                                        Margin="0,25,0,25">
+                                <Image Name="img_bookCover"
+                                       Height="400"
+                                       Margin="0,25,0,0"
+                                       Source="{Binding Cover}"
+                                       RenderOptions.BitmapScalingMode="HighQuality">
+                                </Image>
+                            </StackPanel>
+
+
+
+
+                            <StackPanel>
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Title</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Name="txt_title"
+                                           Text="{Binding Title}"
+                                           TextWrapping="WrapWithOverflow"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Author</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Name="txt_author"
+                                           Text="{Binding Author}"
+                                           TextWrapping="WrapWithOverflow"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Published year</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Name="txt_year"
+                                           Text="{Binding Year}"
+                                           TextWrapping="WrapWithOverflow"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+
+
+                            </StackPanel>
+                        </StackPanel>
+
+                    </DockPanel>
+                
+                </Grid>
+            </TabItem>
+            <TabItem Header="Pagination">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="700"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black"
+                            BorderThickness="0.5">
+                        <DockPanel>
+                            <Label DockPanel.Dock="Top"
+                                   Content="PAGINATION"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Height="50"
+                                   FontSize="24"
+                                   FontFamily="Cascadia Mono SemiBold"
+                                   FontStretch="Medium">
+                            </Label>
+
+                            <StackPanel DockPanel.Dock="Bottom"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,10,0,10">
+
+
+                                <Button Width="50"
+                                        Background="gray"
+                                        Foreground="#183153"
+                                        FontWeight="Medium"
+                                        FontSize="24"
+                                        Grid.Column="0"
+                                        Height="30"
+                                        Click="btn_prev">
+                                    &lt;
+                                </Button>
+                                <Label Width="100"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center"
+                                       Background="#d5d5d5"
+                                       Name="lb_pageNum"
+                                       Content="1/1"
+                                       Grid.Column="1"
+                                       FontSize="16"></Label>
+                                <Button Width="50"
+                                        Background="gray"
+                                        Foreground="#183153"
+                                        FontWeight="Medium"
+                                        FontSize="24"
+                                        Grid.Column="2"
+                                        Height="30"
+                                        Click="btn_next">
+                                    &gt;
+                                </Button>
+                            </StackPanel>
+                            <Border BorderBrush="Black"
+                                    BorderThickness="0,0.5,0,0.5">
+                                <ListView Name="pageList"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                          Background="#fbfbfb"
+                                          BorderBrush="Transparent"
+                                          SelectionChanged="pageList_SelectionChanged">
+
+
+
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="10">
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="10"
+                                                                      ShadowDepth="1"
+                                                                      Direction="270"
+                                                                      Color="#bfced6">
+                                                    </DropShadowEffect>
+                                                </Border.Effect>
+                                                <StackPanel Height="300"
+                                                            Width="200"
+                                                            Background="white">
+                                                    <StackPanel  Margin="0,0,0,10">
+                                                        <Image Height="250"
+                                                               Margin="5,5,5,0"
+                                                               Source="{Binding Cover}"
+                                                               Stretch="Uniform"
+                                                               RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                                                    </StackPanel>
+                                                    <TextBlock Height="50"
+                                                               HorizontalAlignment="Center"
+                                                               TextWrapping="WrapWithOverflow">
+                                  <Run Text="{Binding Title}"
+                                                        FontSize="12"
+                                                        FontStretch="Medium"
+                                                        FontWeight="Bold"
+                                                        FontStyle="Italic"
+                                                        FontFamily="Cascadia Mono" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Border>
+                        </DockPanel>
+                    </Border>
+                    <DockPanel Grid.Column="1"
+                               HorizontalAlignment="Center"
+                               Name="detail_book">
+                        <StackPanel Margin="20,0,20,0">
+                            <StackPanel HorizontalAlignment="Center"
+                                        Background="white"
+                                        Margin="0,25,0,25">
+                                <Image Height="400"
+                                       Margin="0,25,0,0"
+                                       Source="{Binding Cover}"
+                                       RenderOptions.BitmapScalingMode="HighQuality">
+                                </Image>
+                            </StackPanel>
+
+
+
+
+                            <StackPanel>
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Title</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Text="{Binding Title}"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Author</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Text="{Binding Author}"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Published year</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Text="{Binding Year}"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+
+
+                            </StackPanel>
+                        </StackPanel>
+
+                    </DockPanel>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Search">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="700"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black"
+                            BorderThickness="0.5"
+                            Margin="0,0,0,20">
+                        <DockPanel >
+                            <StackPanel DockPanel.Dock="Top"
+                                        Orientation="Horizontal"
+                                        Margin="20,10,10,10">
+                                <xctk:WatermarkTextBox Watermark="Search..."
+                                                       Name="input_seacrch"
+                                                       Width="300"
+                                                       Padding="5,2"
+                                                       VerticalAlignment="Center"
+                                                       MaxLength="30"
+                                                       Height="22"
+                                                       KeyDown="input_seacrch_KeyDown" />
+                                <ComboBox Name="search_option"
+                                          Margin="10,0,0,0"
+                                          SelectedIndex="0"
+                                          Width="120"
+                                          Padding="10,5"
+                                          VerticalAlignment="Center">
+                                    <ComboBoxItem Content="Title" />
+                                    <ComboBoxItem Content="Author" />
+                                    <ComboBoxItem Content="Publish year" />
+
+                                </ComboBox>
+                                <Button Margin="10,0,0,0"
+                                        Padding="10,5"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Click="btn_search">
+                                    <Image Source="/images/btn_search.png"
+                                           MaxHeight="15"
+                                           RenderOptions.BitmapScalingMode="HighQuality" />
+                                </Button>
+                            </StackPanel>
+                            <Border BorderBrush="Black"
+                                    BorderThickness="0,0.5,0,0.5">
+                                <WrapPanel>
+                                    <Image x:Name="img_noresult"
+                                           Source="/images/no_result.png"></Image>
+
+                                    <ListView Name="searchResult_List"
+                                              Visibility="Collapsed"
+                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                              Background="#fbfbfb"
+                                              BorderBrush="Transparent"
+                                              SelectionChanged="searchResult_List_SelectionChanged">
+                                        <ListView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel />
+                                            </ItemsPanelTemplate>
+                                        </ListView.ItemsPanel>
+
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="10">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect BlurRadius="10"
+                                                                          ShadowDepth="1"
+                                                                          Direction="270"
+                                                                          Color="#bfced6">
+                                                        </DropShadowEffect>
+                                                    </Border.Effect>
+                                                    <StackPanel Height="300"
+                                                                Width="200"
+                                                                Background="white">
+                                                        <StackPanel  Margin="0,0,0,10">
+                                                            <Image Height="250"
+                                                                   Margin="5,5,5,0"
+                                                                   Source="{Binding Cover}"
+                                                                   Stretch="Uniform"
+                                                                   RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                                                        </StackPanel>
+                                                        <TextBlock Height="50"
+                                                                   HorizontalAlignment="Center"
+                                                                   TextWrapping="WrapWithOverflow"
+                                                                   FontStyle="Italic"
+                                                                   FontFamily="Cascadia Mono">
+                                  <Run Text="{Binding Title}"
+                                                            FontSize="12"
+                                                            FontStretch="Medium"
+                                                            FontWeight="Bold" />
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                </WrapPanel>
+                            </Border>
+                        </DockPanel>
+                    </Border>
+                    <DockPanel Grid.Column="1"
+                               HorizontalAlignment="Center">
+                        <StackPanel Margin="20,0,20,0"
+                                    Name="search_detailPanel">
+                            <StackPanel HorizontalAlignment="Center"
+                                        Background="white"
+                                        Margin="0,25,0,25">
+                                <Image Name="search_imgBookCover"
+                                       Height="400"
+                                       Margin="0,25,0,0"
+                                       Source="{Binding Cover}"
+                                       RenderOptions.BitmapScalingMode="HighQuality">
+                                </Image>
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Title</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Name="search_txt_title"
+                                           Text="{Binding Title}"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Author</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Name="search_txt_author"
+                                           Text="{Binding Author}"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+                                <TextBlock FontSize="15"
+                                           Foreground="Gray">Published year</TextBlock>
+                                <TextBlock FontSize="18"
+                                           Name="search_txt_year"
+                                           Text="{Binding Year}"
+                                           FontStyle="Italic"
+                                           FontFamily="Cascadia Mono"></TextBlock>
+
+
+
+                            </StackPanel>
+                        </StackPanel>
+
+                    </DockPanel>
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
